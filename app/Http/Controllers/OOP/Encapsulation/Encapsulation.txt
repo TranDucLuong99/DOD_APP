@@ -1,0 +1,14 @@
+Đặc trưng này của OOP khiến nó trở nên gần gũi hơn với thế giới thật. Trong thực tế, bạn có thể
+thao tác với hầu hết các loại đồ vật (đối tượng) mà không cần biết bên trong nó có gì. Ví dụ: bật một
+chiếc TV, bật một chiếc Laptop. Những thứ chi tiết như các vi mạch, các thiết kế phức tạp đều được
+giấu một cách gọn gàng bên trong lớp vỏ. Bạn chỉ có một lớp giao diện (interface) đơn giản để tương
+tác với đối tượng: một cái nút bấm, một cái công tắc chẳng hạn. Điều này gợi ý về việc “đóng gói”
+code của bạn vào đối tượng, và chỉ “chìa” ra các “phương thức” cần thiết để tương tác với đối tượng
+đó.
+Trong OOP chúng ta thường sử dụng các từ khoá như “public”, “protected”, “private” để chỉ định mức
+độ đóng gói
+● Public cho phép các thuộc tính được sử dụng thoải mái bởi các lớp khác.
+● Protected chỉ cho phép các lớp con của lớp cha được phép sử dụng
+● Private chỉ cho phép các method thuộc class đó được phép truy cập (Các lớp con cũng không
+được phép)
+Cùng xem ví dụ dưới đây nhé:

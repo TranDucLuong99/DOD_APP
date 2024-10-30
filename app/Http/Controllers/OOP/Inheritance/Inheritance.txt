@@ -1,0 +1,14 @@
+Kế thừa (Inheritance)
+Kế thừa là khả năng xây dựng các class mới dựa trên các class đã tồn tại. Lợi ích chính của kế thừa
+là tái sử dụng code. Nếu bạn chỉ muốn tạo một class có một số hành vi khác với class hiện tại, sử
+dụng kế thừa giúp bạn không cần phải sao chép code của class cha. Thay vào đó, bạn mở rộng
+class hiện tại, đưa thêm các chức năng bổ sung ở class con. Class con sẽ được kế thừa các phương
+thức của lớp cha.
+Đối với kế thừa, bạn phải đảm bảo rằng class con sẽ có những khả năng giống hệt class cha. Nếu ở
+class cha có các phương thức trừu tượng (abstract method), bạn sẽ vẫn phải triển khai nó ở class
+con, kể cả bạn không cần đến nó. Kế thừa có một rủi ro rất lớn, là bạn có thể vô tình khiến cho class
+con hoạt động không giống như class cha (vi phạm nguyên tắc thay thế Liskov, mình sẽ bàn luận nó
+sâu hơn ở section SOLID bên dưới). Điều này dẫn tới bug vô tình trong ứng dụng mà bạn khó lường
+trước, và nó cũng dẫn tới một nguyên tắc quan trọng nữa khi lập trình OOP: Composition over
+Inheritance (Ưu tiên sử dụng thành phần thay vì kế thừa).
+Tiếp tục là một ví dụ đơn giản về Animal, Cat, Dog để minh hoạ cho kế thừa:

@@ -1,0 +1,125 @@
+Giới thiệu về mẫu thiết kế (Design Pattern)
+Mẫu Thiết Kế (Design Pattern) là gì?
+Mẫu thiết kế (Design Pattern hoặc DP) là những giải pháp điển hình cho các vấn đề thường gặp
+trong thiết kế phần mềm. Chúng giống như các bản thiết kế sẵn mà bạn có thể tùy chỉnh để giải
+quyết một vấn đề thiết kế lặp đi lặp lại trong code của bạn.
+Khác với các thư viện, bạn không thể cứ copy DP về và “paste” vào ứng dụng của mình. Hãy nhớ,
+DP cho bạn tư tưởng chung để giải quyết vấn đề. Bạn có thể tuân theo các chi tiết hay khuyến cao
+trong DP, từ đó tìm ra một giải pháp phù hợp với ứng dụng của mình. DP không mô tả chính xác các
+bước mà bạn cần thực hiện: Nó cho bạn một giải pháp chung về thiết kế, đầu vào và đầu ra. Phần
+còn lại, tuỳ thuộc vào cách mà bạn triển khai.
+Fun fact: Design Pattern không phải khái niệm độc quyền xuất hiện trong thiết kế phần mềm. Lần
+đầu tiên nó được đề cập trong cuốn “”A Pattern Language: Towns, Buildings, Construction” của
+Christopher Alexander - một nhà kiến trúc sư và cũng là nhà khoa học máy tính lỗi lạc. Cuốn sách
+này mô tả các kỹ thuật áp dụng Patterns trong kỹ thuật xây dựng. Nó đã trở thành tiền đề và niềm
+cảm hứng để các tác giả về sau phát triển các Design Pattern cho lập trình phần mềm.
+
+Tại Sao Tôi Nên Học Các Mẫu Thiết Kế?
+Bạn có thể làm việc như một lập trình viên trong nhiều năm mà không cần biết đến một mẫu thiết kế
+nào. Bản thân mình cũng đã từng như vậy. Tuy nhiên, ngay cả trong trường hợp đó, bạn có thể đang
+triển khai một số mẫu mà không nhận ra. Vậy tại sao bạn nên dành thời gian học chúng?
+Mẫu thiết kế là bộ công cụ của các giải pháp đã được kiểm chứng cho các vấn đề phổ biến trong
+thiết kế phần mềm. Ngay cả khi bạn không gặp phải những vấn đề này, việc hiểu các mẫu thiết kế
+vẫn hữu ích vì nó giúp bạn học cách giải quyết mọi loại vấn đề bằng cách sử dụng các nguyên tắc
+của thiết kế hướng đối tượng.
+Mẫu thiết kế xác định một ngôn ngữ chung mà bạn và đồng nghiệp có thể sử dụng để giao tiếp hiệu
+quả. Mỗi khi cần tới giải pháp, bạn chỉ cần nói: “Chỗ này nên sử dụng Strategy”, hoặc “Chỗ kia nên là
+Observer”. Nếu bạn và đồng nghiệp đã thông thạo các Pattern này, thì sẽ tiết kiệm được rất nhiều
+thời gian giải thích và mô tả solution.
+
+Các nguyên tắc trong thiết kế phần mềm
+Thiết kế tốt có đặc điểm gì
+Tái sử dụng code (Code Reuse)
+Tái sử dụng được code là chìa khoá quan trọng cho một ứng dụng thành công. Mình hay nói đùa
+rằng “Thời điểm bạn bắt đầu copy code là thời điểm mà ứng dụng của bạn nên được viết lại”. Code
+không thể tái sử dụng khiến ứng dụng trở nên cồng kềnh, gia tăng cả về chi phí nhân sự và thời gian
+phát triển. Chưa kể, nó tiềm ẩn vô số lỗi có thể phát sinh.
+Có một câu nói đùa nữa cũng khá nổi tiếng: “Đừng chế lại cái bánh xe”. Ý tưởng rất đơn giản: thay vì
+code lại mọi thứ, hãy thử tìm xem có thư viện, hay đoạn code nào có thể sử dụng lại được hay không
+?
+Nói thì dễ, nhưng việc tái sử dụng code không hề đơn giản chút nào. Các class bị ràng buộc chặt chẽ
+với nhau mà không qua các lớp trừu tượng hay việc không phân chia trách nhiệm rõ ràng cho các đối
+tượng (Hiểu nôm na là một class mấy nghìn dòng code). Những điều này là biểu hiện của một thiết
+kế chưa tốt, và nó hạn chế tính linh hoạt và tái sử dụng của code.
+Sử dụng hợp lý các Design Pattern giúp code của bạn dễ dàng tái sử dụng hơn. Mình sẽ bàn luận
+thêm ở section “Các Design Pattern quan trọng” nhé.
+
+Khả năng mở rộng (Extensibility) và tính linh hoạt (Flexibility)
+“Thay đổi là thứ cố định duy nhất”. Nếu bạn đã đọc cuốn “Thiết kế hướng nghiệp vụ với Laravel của
+mình”, bạn sẽ hiểu phần nào áp lực của một ứng dụng phải chịu khi cần “chống chọi” với những thay
+đổi liên tục từ nghiệp vụ. Những câu chuyện về những đòi hỏi của khách hàng, thậm chí có thể khác
+hoàn toàn những thiết kế ban đầu, chắc chắn là không thiếu. Vì thế, khả năng mở rộng linh hoạt của
+thiết kế là cực kỳ quan trọng. Điều này thậm chí còn khó hơn cả tái sử dụng code. Tuy nhiên nhờ có
+các nguyên tắc như SOLID và các Design Pattern, ứng dụng của chúng ta có thể tăng được khả
+năng đáp ứng của nó với các nhu cầu phức tạp, và hạn chế tối đa rủi ro khi triển khai.
+
+Các nguyên tắc thiết kế
+Đóng gói
+Trong thế giới đời thật của chúng ta, mọi thứ đều được “đóng gói” cẩn thận. Mình tin là các bạn sẽ từ
+chối sử dụng một cái máy giặt trông xù xì xấu xí, hoặc sẽ không thích một chiếc TV với quá nhiều nút
+bấm khó hiểu. Việc đóng gói tốt giúp bạn rất nhiều điều quan trọng:
+● Giảm thiểu tác động chéo lẫn nhau có thể gây lỗi: Hãy tưởng tượng, ứng dụng của bạn giống
+như một chiếc xe ô tô với bốn bánh xe. Trong trường hợp xấu, chiếc xe của bạn có thể cán
+phải đinh (những thay đổi bất thường của nghiệp vụ). Nếu được đóng gói không tốt, chiếc xe
+sẽ không thể di chuyển. Ngược lại, bạn có thể chỉ thay thế chiếc bánh xe bị hỏng, và chiếc xe
+có thể hoạt động bình thường.
+● Cải thiện tính tái sử dụng: Các module được đóng gói có thể được sử dụng lại ở nhiều nơi:
+các thư viện mà bạn cài với PHP / NodeJS là đại diện tiêu biểu cho việc đóng gói.
+● Tăng tính bảo mật: Việc chỉ cho phép tác động thông qua các phương thức nhất định, giúp
+đảm bảo an toàn cho đối tượng. Ví dụ class Account sẽ chỉ cho phép thay đổi thuộc tính
+balance duy nhất thông qua phương thức “deposit”. Trong phương thức này mình sẽ cài đặt rõ
+ràng các quy tắc để đảm bảo an toàn khi thay đổi số dư. Nhờ đó, ứng dụng trở nên chắc chắn
+và an toàn hơn rất nhiều.
+Đóng gói có thể thể hiện ở nhiều mức độ:
+● Ở mức độ phương thức: Đảm bảo rằng một phương thức chỉ làm một việc duy nhất. Bạn có
+thể quan sát ví dụ bên dưới:
+● Ở mức độ Class: Đảm bảo ràng một class chỉ làm một việc duy nhất. Tốt nhất Class chỉ nên
+chứa một phương thức trách nhiệm chính (hàm handler / execute). Bạn có thể tham khảo
+cuốn “Thiết kế hướng nghiệp vụ với Laravel”, section Actions của mình để hiểu rõ thêm.
+Đóng gói là một nguyên tắc quan trọng trong thiết kế phần mềm, giúp bảo vệ dữ liệu, tăng tính linh
+hoạt, dễ dàng bảo trì, giảm sự phụ thuộc, cải thiện tính tái sử dụng và tăng cường bảo mật. Việc áp
+dụng nguyên tắc đóng gói một cách hiệu quả sẽ giúp bạn tạo ra các phần mềm chất lượng cao, dễ
+dàng mở rộng và bảo trì trong tương lai.
+
+Tập trung vào trừu tượng
+Lập trình tập trung vào các giao diện (interface), chứ không phải triển khai (implementation). Phụ
+thuộc vào trừu tượng, chứ không phải sự cụ thể.
+Nguyên tắc thiết kế này đảm bảo hai yếu tố:
+● Tính linh hoạt và mở rộng mà không phá vỡ đi code đã có: Hãy tưởng tượng nhà vệ sinh của
+bạn bị hỏng chiếc đèn. Bạn có thể ra cửa hàng mua một chiếc đèn tương tự (tương tự ở đây
+nghĩa là triển khai cùng một giao diện kết nối - interface) và thay thế chiếc bị hỏng. Nếu đèn bị
+ràng buộc chặt chẽ, bạn phải thay thế hoàn toàn cả hệ thống điền (ác mộng thật sự).
+● Khả năng tái sử dụng code: Vì không phụ thuộc chặt chẽ, các thành phần của ứng dụng có
+thể đem đi tái sử dụng ở nhiều nơi. Vẫn là câu chuyện của cái đèn bên trên: bởi vì bạn đang
+không tiện ra ngoài, bạn có thể lấy tạm một chiếc đèn nào đó trong nhà để tái sử dụng ở vị trí
+chiếc đèn bị hỏng.
+Việc tập trung vào giao diện và trừu tượng giúp chúng ta giải quyết hai ví dụ trên một cách gọn nhẹ.
+Khi thiết kế hệ thống điện và cái đèn, mình sẽ tập trung vào cách để hai hệ thống này tương tác
+được với nhau (interface). Thay vì nghĩ xem nên làm cái đèn như thế nào để gắn được vào hệ thống
+điện, mình chỉ cần đảm bảo hai đối tượng này giao tiếp lỏng lẻo với nhau (qua chiếc ổ cắm). Miễn là
+một cái đèn implement interface này, nó đều có thể được sử dụng và hoạt động bình thường.
+Ưu tiên thành phần hơn kế thừa (Composition over Inheritance)
+Như mình đã nói ở bên trên, Kế thừa sẽ giúp bạn tái sử dụng code. Cách thức thông thường là mình
+sẽ “bóc” các đoạn code dùng chung lên class cha, và các class con sẽ kế thừa lại. Thật đơn giản và
+chuẩn xác 😀
+Tuy nhiên, khi ứng dụng của bạn ngày càng phình to ra, thì kế thừa sẽ đem lại những rủi ro rất lớn:
+● Bạn phải triển khai lại mọi phương thức trừu tượng của class cha nếu có. Đôi khi class của
+bạn không nhất thiết phải triển khai toàn bộ các phương thức này.
+● Rủi ro vi phạm nguyên tắc thay thế Liskov: Class con có thể có những hành vi xung đột với
+class cha, gây rủi ro lớn cho ứng dụng của bạn. Ngược lại, mọi thay đổi từ class cha cũng có
+rủi ro gây lỗi tới các class con kế thừa nó.
+● Khi hệ thống phình to, cơ chế kế thừa tái sử dụng code có thể tạo thành nhiều luồng kế thừa
+song song. Kiểu với nghiệp vụ A, bạn có BaseClass A, và một loạt các class kế thừa
+BaseClass A. Kiểu nghiệp vụ B, bạn có BaseClass B, và tiếp tục có các class con kế thừa nó.
+Dần dần, bạn sẽ rất khó kiểm soát ứng dụng của mình.
+Có một sự thay thế cho kế thừa gọi là sử dụng thành phần. Trong khi kế thừa thể hiện mối quan hệ
+"là một" giữa các class (một chiếc xe hơi là một phương tiện), sử dụng thành phần thể hiện mối quan
+hệ "có một" (một chiếc xe hơi có một động cơ). Điều này giúp tăng tính bảo trì, thay thế và linh hoạt,
+an toàn hơn cho ứng dụng.
+Để áp dụng nguyên tắc này, bạn cần chia tách class / module của mình thành các class con, chịu
+trách nhiệm đơn lẻ, trước khi kết hợp nó theo các nhu cầu khác nhau để tạo thành các đối tượng bạn
+mong muốn. Hãy nghĩ đến ví dụ mình đã nhắc lại nhiều lần trong cuốn sách này: Bạn có một cái thân
+đèn, với các bóng đèn được để riêng bên ngoài. Muốn đèn sáng màu gì, bạn chỉ cần mua bóng đèn
+tương ứng là được, dễ dàng thay thế và linh hoạt. Đây cũng chính là một cách để thực thi
+Composition over Inheritance thông qua Dependency Injection (Mình có trình bày rất kỹ về
+Dependency Injection trong cuốn “Thiết kế hướng nghiệp vụ với Laravel”).

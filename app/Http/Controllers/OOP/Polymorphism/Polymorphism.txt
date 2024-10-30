@@ -1,0 +1,16 @@
+Đa hình (Polymorphism)
+Hãy xem một ví dụ về ô tô. Chúng ta có thể chắc chắn một điều rằng, mọi chiếc ô tô đều có thể di
+chuyển. Vì vậy khi thiết kế, mình sẽ đặt phương thức cơ bản “move” này lên class cha, khai báo nó
+là trừu tượng, và buộc các class con tự định nghĩa cách thức di chuyển của nó. Một chiếc siêu xe
+hoặc một chiếc xe gia đình đều có thể di chuyển, nhưng kết quả và cách thức có thể là khác nhau:
+siêu xe có thể đi rất nhanh, nhưng xóc hơn một chiếc xe gia đình.
+Giờ hãy tưởng tượng bạn đi lạc vào bãi đỗ xe, và có thể chọn bất kỳ chiếc xe nào trước mắt để lái đi.
+Bạn có thể không biết chắc chắn chiếc xe trước mặt là xe gì, nhưng bạn vẫn hoàn toàn có thể khiến
+chiếc xe di chuyển: cách thức di chuyển được định nghĩa cụ thể theo từng chiếc xe.
+Trong quá trình hoạt động, ứng dụng của bạn có thể không biết chính xác đối tượng Car là gì.
+Nhưng, nhờ vào cơ chế đa hình, ứng dụng của bạn có thể tìm được chính xác class con của đối
+tượng Car đó, và chạy hành vi thích hợp. Đa hình là khả năng của một chương trình để phát hiện lớp
+thực của một đối tượng và gọi triển khai của nó ngay cả khi kiểu thực sự của nó không được biết
+trong ngữ cảnh hiện tại. Các đối tượng thuộc class con có thể được sử dụng một cách linh hoạt,
+miễn là nó đảm bảo các hành vi giống với class cha: Nếu có một class Car mà không thể “move”,
+chúng ta sẽ không xem xét nó là một chiếc ô tô thông thường nữa mà cần báo lỗi.
