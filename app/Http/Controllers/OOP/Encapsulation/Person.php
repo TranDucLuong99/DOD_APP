@@ -4,7 +4,7 @@ class Person{
     // Các thuộc tính private chỉ có thể được truy cập trong class này
     private $name;
     private $age;
-
+    // Constructor để khởi tạo đối tượng
     public function __construct($name, $age)
     {
         $this->name = $name;
@@ -31,6 +31,4 @@ class Person{
             $this->age = $age;
         }
     }
-
-
 }
