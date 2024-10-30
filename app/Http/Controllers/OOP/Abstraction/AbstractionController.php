@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 class AbstractionController extends Controller
 {
     public function exportSound(){
+        // Sử dụng các lớp con
         $dog = new Dog();
         $cat = new Cat();
         $dog->makeSound(); // Output: Gâu gâu
