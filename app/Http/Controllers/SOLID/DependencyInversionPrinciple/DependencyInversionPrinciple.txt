@@ -1,0 +1,98 @@
+Nguyên Tắc Đảo Ngược Phụ Thuộc (Dependency Inversion Principle)
+Các lớp cấp cao không nên phụ thuộc vào các lớp cấp thấp. Cả hai nên phụ thuộc vào các
+trừu tượng. Các trừu tượng không nên phụ thuộc vào chi tiết. Chi tiết nên phụ thuộc vào các
+trừu tượng.
+Nguyên tắc này nhằm mục đích giảm sự phụ thuộc giữa các phần của chương trình bằng cách sử
+dụng các trừu tượng (interface hoặc abstract class) để tách biệt các module cấp cao và cấp thấp.
+Điều này giúp cho các module có thể thay đổi độc lập mà không ảnh hưởng đến các module khác,
+tăng tính linh hoạt và khả năng mở rộng của hệ thống. Ví dụ:
+Trước Khi Áp Dụng DIP
+Giả sử chúng ta có một ứng dụng đơn giản để gửi thông báo, trong đó lớp Notification phụ thuộc trực
+tiếp vào lớp EmailService.
+<?php
+class EmailService {
+public function sendEmail($message) {
+echo "Sending email: $message\n";
+}
+}
+class Notification {
+private $emailService;
+public function __construct() {
+$this->emailService = new EmailService();
+}
+public function send($message) {
+$this->emailService->sendEmail($message);
+}
+}
+// Sử dụng lớp Notification
+$notification = new Notification();
+$notification->send("Hello, World!");
+?>
+Trong ví dụ này, lớp Notification phụ thuộc trực tiếp vào lớp EmailService. Nếu chúng ta muốn thay
+đổi cách gửi thông báo, ví dụ gửi qua SMS thay vì email, chúng ta phải thay đổi mã của lớp
+Notification, điều này vi phạm DIP.
+Sau Khi Áp Dụng DIP
+Để áp dụng DIP, chúng ta sẽ giới thiệu một interface (hoặc abstract class) MessageService mà cả
+EmailService và SmsService đều triển khai. Lớp Notification sẽ phụ thuộc vào MessageService thay
+vì EmailService.
+<?php
+interface MessageService {
+public function sendMessage($message);
+}
+class EmailService implements MessageService {
+public function sendMessage($message) {
+echo "Sending email: $message\n";
+}
+}
+class SmsService implements MessageService {
+public function sendMessage($message) {
+echo "Sending SMS: $message\n";
+}
+}
+class Notification {
+private $service;
+public function __construct(MessageService $service) {
+$this->service = $service;
+}
+public function send($message) {
+$this->service->sendMessage($message);
+}
+}
+// Sử dụng lớp Notification với EmailService
+$emailService = new EmailService();
+$notification = new Notification($emailService);
+$notification->send("Hello via Email!");
+// Sử dụng lớp Notification với SmsService
+$smsService = new SmsService();
+$notification = new Notification($smsService);
+$notification->send("Hello via SMS!");
+?>
+Trong ví dụ này:
+● Trừu Tượng Hóa (Abstraction): Chúng ta tạo ra interface MessageService để trừu tượng hóa
+hành vi gửi thông báo.
+● Module Cấp Cao: Lớp Notification bây giờ phụ thuộc vào MessageService thay vì phụ thuộc
+trực tiếp vào EmailService.
+● Module Cấp Thấp: Các lớp EmailService và SmsService triển khai MessageService.
+Bằng cách này, chúng ta có thể dễ dàng thay thế hoặc mở rộng cách gửi thông báo mà không cần
+thay đổi lớp Notification. Điều này làm cho mã linh hoạt hơn, dễ bảo trì hơn và tuân thủ nguyên tắc
+DIP.
+Inversion of Control (IoC)
+Nhắc đến nguyên tắc Đảo ngược sự phụ thuộc thì không thể không nhắc tới nguyên lý Inversion of
+Control hay IoC. Đối với IoC, thay vì flow thông thường là chính ứng dụng khởi tạo và gọi đến các
+thành phần khác, trong IoC, flow của ứng dụng được điều khiển bởi một framework hay một
+Container bên ngoài.
+Hiểu một cách đơn giản, class của bạn sẽ trao quyền điều khiển ra bên ngoài, qua việc tiêm (inject)
+các phụ thuộc (dependency). Đối với mô hình thông thưởng, class sẽ tự khởi tạo các phụ thuộc bên
+trong để sử dụng.
+Đối với Laravel, bạn sẽ không xa lạ gì với bộ IoC được gọi là “Service Container”. Trên SpringBoot,
+bộ IoC sẽ khởi tạo các “Bean”. Chúng đều tuân theo nguyên tắc: các đối tượng, dịch vụ được đưa
+vào quản lý bởi một trung tâm được gọi là Service Locator, từ trung tâm đăng ký (registry) này các
+lớp muốn sử dụng dịch vụ nào thì Locator sẽ cung cấp (khởi tạo nếu chưa, và trả về dịch vụ cho đối
+tượng sử dụng). Những lợi thế mà IoC sẽ cung cấp cho ứng dụng của bạn:
+● Ứng dụng được điều khiển linh hoạt từ bên ngoài thông qua Service Locator. Bạn có thể
+binding các instance tại thời điểm chạy ứng dụng (Runtime). Ví dụ inject một Interface, mình
+có thể hoán đổi các class implement interface đó và inject vào class chính bất kỳ lúc nào.
+● Tách rời việc khởi tạo và thực thi giúp cấu trúc linh hoạt, dễ dàng thay thế và bảo trì.
+● Dễ dàng testing thông qua mocking các dependency
+Cách thực hiện IoC phổ biến nhất hiện nay là kết hợp giữa Service Locator (cung cấp bởi các
+Framework) và Dependency Injection.

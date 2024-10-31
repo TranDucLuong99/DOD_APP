@@ -1,0 +1,73 @@
+Có một điều thú vị về nguyên tắc này: Nó được phát biểu lần đầu bởi một người phụ nữ, bà Barbara
+Liskov, một nhà khoa học máy tính xuất sắc. Nguyên tắc này có thể được mô tả một cách đơn giản:
+Thằng class cha có hành vi gì, thì class con phải có đầy đủ có hành vi đó. Nghĩa là ta có thể thay thế
+class cha bằng class con mà hoàn toàn không phá vỡ ứng dụng của mình.
+Nguyên tắc này nghe qua thì rất đơn giản, nhưng nó lại rất dễ vi phạm, nếu bạn không cẩn thận khi
+sử dụng Kế thừa. Hãy cùng xem qua ví dụ sau:
+Giả sử bạn có một class với một phương thức makeNewCar(): Car.
+● Tốt: Một class con ghi đè phương thức như sau: makeNewCar(): SuperCar. Điều này ổn, vì
+SuperCar là một lớp con của Car. Chương trình của chúng ta vẫn sẽ chạy bình thường.
+Ví dụ:
+<?php
+// Lớp cha
+class Car {
+public function drive() {
+return "Lái xe";
+}
+}
+// Lớp SuperCar
+class SuperCar extends Car {
+public function drive() {
+return "Lái siêu xe";
+}
+}
+// Lớp cha với phương thức makeNewCar
+class CarFactory {
+public function makeNewCar(): Car {
+return new Car();
+}
+}
+// Code chạy thử không lỗi
+function testCarFactory(CarFactory $factory) {
+$car = $factory->makeNewCar();
+echo $car->drive() . "\n";
+}
+● Xấu: Một class con ghi đè phương thức như sau: makeNewCar(): Ship. Vấn đề đã xảy ra ở
+đây: phương thức được ghi đè hoàn toàn không tương thích với class cha. Điều này sẽ gây lỗi
+tới tất cả lời gọi phương thức này. Tất nhiên, ví dụ này mình đã làm nó “lỗi” một cách rất rõ
+ràng (các IDE có thể sớm warning bạn). Trong thực tế, nó có thể được ẩn giấu một cách khéo
+léo, đến mức làm bạn không để ý, và lỗi cũng có thể nghiêm trọng hơn rất nhiều.
+Ví dụ:
+<?php
+// Lớp cha
+class Car {
+public function drive() {
+return "Lái xe";
+}
+}
+// Lớp không liên quan đến Car
+class Ship {
+public function sail() {
+return "Đi thuyền";
+}
+}
+// Lớp cha với phương thức makeNewCar
+class CarFactory {
+public function makeNewCar(): Car {
+return new Car();
+}
+}
+// Lớp con với phương thức makeNewCar trả về Ship (không phải là lớp con của
+Car)
+class ShipFactory extends CarFactory {
+public function makeNewCar(): Ship {
+return new Ship();
+}
+}
+// Code chạy thử gây lỗi
+function testCarFactory(CarFactory $factory) {
+$car = $factory->makeNewCar();
+echo $car->drive() . "\n"; // Lỗi vì Ship không có phương thức drive
+}
+Đảm bảo nguyên tác Liskov giúp code được tái sử dụng an toàn, không làm thay đổi hành vi của đối
+tượng một cách bất ngờ, từ đó giảm thiểu tối đa lỗi gây ra cho ứng dụng

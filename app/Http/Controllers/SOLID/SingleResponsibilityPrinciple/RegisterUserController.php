@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SOLID;
+namespace App\Http\Controllers\SOLID\SingleResponsibilityPrinciple;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

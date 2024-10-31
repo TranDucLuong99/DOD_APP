@@ -1,0 +1,61 @@
+Nguyên Tắc Phân Tách Giao Diện (Interface Segregation Principle)
+Client chỉ nên phụ thuộc vào những gì mà nó cần. Có nghĩa là khi triển khai các interface, đừng
+làm nó trở nên quá “rộng” và cover mọi trường hợp. Hãy thu hẹp nó làm sao để các class con không
+cần triển khai các hành vi mà nó không cần. Điều này mục đích nhằm tránh việc khi bạn sửa một
+phương thức nào đó ở interface, nó sẽ không gây lỗi tới các class con không đụng tới các phương
+thức này.
+Hãy quay lại các ví dụ về động vật. Chúng ta đều biết là con mèo và con cá thì đều có thể bơi được,
+nhưng con cá thì không chạy được. Con mèo và con chim có thể chạy được, nhưng con mèo thì
+không bay được. Ban đầu, nếu bạn triển khai một Interface lớn như Moveable, bao gồm ba phương
+thức: swim(), fly(), run() như dưới đây:
+thì sẽ rất bối rôi nếu Cat phải implement cả fly(), và Fish thì lại phải implement run(). Rủi ro có thể
+đến nếu có sự thay đổi ở interface và khiến Cat / Fish gặp lỗi.
+Thay vì đó, mình chia nhỏ các Interface trên thành ba interface: Flyable, Runnable và Swimmable.
+Giờ đây, mỗi class con chỉ cần implement interface mà nó cần, đảm bảo rằng hạn chế tối đa các rủi
+ro xảy ra:
+// Trước khi áp dụng Interface Segregation Principle
+<?php
+interface Moveable {
+public function move();
+}
+class Cat implements Moveable {
+public function move() {
+echo "Cat runs";
+}
+}
+class Fish implements Moveable {
+public function move() {
+echo "Fish swims";
+}
+}
+class Bird implements Moveable {
+public function move() {
+echo "Bird flies";
+}
+}
+//Sau khi áp dụng Interface Segregation Principle
+<?php
+interface Flyable {
+public function fly();
+}
+interface Runnable {
+public function run();
+}
+interface Swimmable {
+public function swim();
+}
+class Cat implements Runnable {
+public function run() {
+echo "Cat runs";
+}
+}
+class Fish implements Swimmable {
+public function swim() {
+echo "Fish swims";
+}
+}
+class Bird implements Flyable {
+public function fly() {
+echo "Bird flies";
+}
+}

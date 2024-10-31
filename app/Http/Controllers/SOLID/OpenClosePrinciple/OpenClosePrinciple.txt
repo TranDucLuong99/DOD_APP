@@ -1,0 +1,77 @@
+Nguyên Tắc Mở/Đóng (Open/Closed Principle)
+Các lớp nên mở để mở rộng nhưng đóng để sửa đổi.
+Ý tưởng chính của nguyên tắc này là giữ cho mã hiện có không bị hỏng khi bạn triển khai các tính
+năng mới.
+Mình nghĩ đây là một nguyên tắc khá dễ hiểu. Mình hay nói vui với đồng nghiệp: “Cái gì đang chạy
+rồi thì đừng sửa nó” 😀. Tư tưởng của nguyên tắc này phần nào phản ánh câu nói đùa trên: chúng ta
+cần hạn chế tối đa sửa code cũ, mà ưu tiên mở rộng, và “thay thế” nếu có thể. Hãy tưởng tượng bạn
+đang làm việc với một website Thương mại điện tử. Một ngày đẹp trời, công ty yêu cầu bạn phải
+thêm một phương thức vận chuyển mới. Sẽ là ác mộng nếu mọi thứ liên quan đến phương thức vận
+chuyển đều được viết chung trong class Order (Đơn hàng). Bạn sẽ phải tác động trực tiếp vào code
+cũ, cố gắng hy vọng rằng mình không làm hỏng điều gì (và chắc chắn là nó sẽ hỏng rồi, định lý
+Murphy mà 😀). Lúc này, Strategy pattern sẽ giải cứu bạn: chúng ta sẽ trích xuất các phương thức
+vận chuyển này sang các class chịu trách nhiệm riêng biệt, implement chung interface để dễ dàng
+thay đổi khi cần.
+Bạn có thể tham khảo ví dụ minh hoạ dưới đây:
+Giả sử chúng ta có một hệ thống tính toán chi phí vận chuyển cho các loại phương tiện khác nhau.
+Ban đầu, hệ thống chỉ hỗ trợ vận chuyển bằng xe tải:
+<?php
+class TruckShipping {
+public function calculateCost($weight) {
+return $weight * 1.5;
+}
+}
+class ShippingService {
+private $shipping;
+public function __construct(TruckShipping $shipping) {
+$this->shipping = $shipping;
+}
+public function calculate($weight) {
+return $this->shipping->calculateCost($weight);
+}
+}
+// Sử dụng ShippingService
+$truckShipping = new TruckShipping();
+$shippingService = new ShippingService($truckShipping);
+echo $shippingService->calculate(100); // Output: 150
+Khi cần thêm loại phương tiện vận chuyển mới như tàu hỏa, thay vì sửa đổi các class hiện có, chúng
+ta sẽ mở rộng hệ thống bằng cách sử dụng interface:
+<?php
+interface ShippingMethod {
+public function calculateCost($weight);
+}
+class TruckShipping implements ShippingMethod {
+public function calculateCost($weight) {
+return $weight * 1.5;
+}
+}
+class TrainShipping implements ShippingMethod {
+public function calculateCost($weight) {
+return $weight * 1.2;
+}
+}
+class ShippingService {
+private $shipping;
+public function __construct(ShippingMethod $shipping) {
+$this->shipping = $shipping;
+}
+public function calculate($weight) {
+return $this->shipping->calculateCost($weight);
+}
+}
+// Sử dụng ShippingService với TruckShipping
+$truckShipping = new TruckShipping();
+$shippingService = new ShippingService($truckShipping);
+echo $shippingService->calculate(100); // Output: 150
+// Sử dụng ShippingService với TrainShipping
+$trainShipping = new TrainShipping();
+$shippingService = new ShippingService($trainShipping);
+echo $shippingService->calculate(100); // Output: 120
+Trong ví dụ trên:
+● Interface ShippingMethod định nghĩa phương thức calculateCost mà các class cụ thể cần triển
+khai.
+● TruckShipping và TrainShipping triển khai interface ShippingMethod.
+Class ShippingService sử dụng dependency injection để nhận một đối tượng ShippingMethod.
+Bằng cách này, nếu chúng ta cần thêm phương thức vận chuyển mới (ví dụ: AirShipping), chúng ta
+chỉ cần tạo một class mới triển khai ShippingMethod mà không cần thay đổi các class hiện có. Điều
+này giúp hệ thống của chúng ta dễ mở rộng và duy trì, tuân thủ theo nguyên tắc Đóng / Mở.
