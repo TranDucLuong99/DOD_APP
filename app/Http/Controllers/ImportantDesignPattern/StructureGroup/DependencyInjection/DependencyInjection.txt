@@ -1,0 +1,64 @@
+Bonus: Dependency Injection
+(Section này mình lấy hoàn toàn từ cuốn “Thiết kế hướng nghiệp vụ với Laravel” của mình):
+Hãy cùng nhắc lại một bài toán kinh điển là cách thiết kế "bóng đèn - đui đèn": Một mẫu thiết kế tốt
+cho phép bạn linh hoạt thay đổi giữa bóng và đui, trong khi thiết kế tồi khiến cái đèn của bạn không
+thể thay thế (tight coupling), khiến bạn buộc phải mua một cái đèn mới, thay vì chỉ cần thay bóng.
+Hãy tưởng tượng cái đèn nhà vệ sinh của mình bị hỏng, và nếu phải thay tuốt tuồn tuột từ trên xuống
+dưới thì thực sự là cơn ác mộng !
+Thành thạo các design pattern cơ bản là điều kiện tiên quyết để bạn phát triển kỹ năng coding của
+mình. DI là giải pháp thiết kế cho chính bài toán bóng đèn - đui đèn bên trên. Nếu bạn làm Laravel,
+chắc chắn bạn đã nằm lòng khái niệm Service Container - một cái hộp thần kỳ giúp ứng dụng của
+bạn trở nên uyển chuyển một cách thú vị thông qua việc binding các lớp trừu tượng. Tuy nhiên, nếu
+bạn là người mới bắt đầu, hầu hết chúng ta chỉ cảm nhận DI qua việc inject interface từ __construct,
+binding trong Service Container. Rất nhiều bạn thắc mắc rốt cuộc DI có gì hơn việc sử dụng từ khóa
+new trong chính class đó (Việc inject nhiều thực sự là rối rắm, đúng không ?).
+Nếu không sử dụng DI, bài toán bóng đèn của chúng ta có thể được thực thi như thế này:
+// Class đèn
+class Lamp {
+public function __construct()
+{
+// Class bóng đèn được gắn chặt vào class Đèn qua từ khóa new
+$this->bulb = new Bulb();
+}
+public function turnOn() { ... }
+}
+Về cốt lõi, DI đại diện cho triết lý "Composition Over Inheritance". Một đối tượng nên được tạo thành
+từ các viên gạch nhỏ hơn từ bên ngoài, thay vì chúng ta tự khởi tạo trong chính đối tượng đó. Hãy
+quay trở lại với ví dụ trên: Nếu ta đã có một cái đui, ta có thể inject bất kỳ cái đèn nào vào cái đui đó
+để thu được một cái đèn như ý muốn. Cần đèn xanh, có. Cần đèn vàng, có. Cần đèn nhấp nháy,
+easy (Đoạn này nghe quen quen phải không, DI giúp chúng ta tạo nên tính Đa hình (Polymorphism).
+Ta có thế chế ra đủ loại đèn mà mình muốn). Nếu cái đui gắn chặt vào một cái đèn (giống như nó tự
+khởi tạo new một cái đèn bên trong nó), rõ ràng là rất tồi tệ (ko thể thay đèn mà sẽ phải vứt nguyên
+mua cái mới). Khi ta tách được đèn và đui, việc của chúng ta là thiết kế một lớp trừu tượng, ở đây
+chính là cái trôn để xoáy đèn vào đui của nó. Cái đèn chỉ cần "implement" "interface đui đèn", và
+miễn là nó implement interface này, nó sẽ luôn xoáy được vào đui, và chắc chắn nó sẽ hoạt động
+được. Rất trực quan và dễ hiểu đúng không các bạn ?
+Ví dụ giờ mình viết class Lamp bên trên như thế này:
+class Lamp
+{
+// Injection thông qua Interface Bulb, hoặc cũng có thể là Abstract Class
+Bulb
+public function __construct(
+Bulb $bulb
+) {
+$this->bulb = $bulb;
+}
+public function turnOn()
+{
+$this->bulb->turnOn();
+}
+}
+Giờ nếu muốn tạo một cái đèn màu xanh, bạn có thể khởi tạo như thế này:
+$lamp = new Lamp(new GreenBulb());
+Một cái đèn màu đỏ, thì sẽ là:
+$lamp = new Lamp(new RedBulb());
+Hãy nhớ nhé: “Composition over Inheritance” là nguyên tắc mà các lớp phải đạt được hành vi đa
+hình và tái sử dụng code bằng thành phần của chúng thay vì kế thừa từ lớp cơ sở hoặc lớp cha.
+DI giúp bạn test dễ hơn nhiều. Tôi muốn test cái đui, hoặc đèn, tôi có sẵn đèn mẫu (Mocking Object),
+cắm vào, sáng, và thế là pass Test. Nếu không có DI, thì class sẽ rất khó để test được.
+Việc áp dụng triệt để triết lý này khi code giúp chúng ta có tư duy phân tách code thành các đơn vị
+nhỏ, để lắp ghép nó thành những cái đèn của chúng ta. Nhiều cái đèn thì có thể làm thành một ngọn
+hải đăng chẳng hạn. Và nếu có cái đèn nào vỡ / hỏng (bug), ta dễ dàng cô lập, thay thế, và sửa chữa
+nó. Ở các section bên dưới, tư duy ưu tiên việc chia nhỏ, lắp ghép sẽ đóng vai trò rất quan trọng
+trong mindset thiết kế của mình.
+
