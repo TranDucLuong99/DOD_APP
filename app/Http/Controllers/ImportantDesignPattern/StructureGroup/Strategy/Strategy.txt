@@ -1,0 +1,63 @@
+Strategy
+Strategy là một mẫu thiết kế hành vi cho phép bạn xác định một tập hợp các công việc tương tự
+nhau, được đặt trong các class riêng biệt (implement chung một interface), và cho phép chúng có thể
+hoán đổi lẫn nhau. Điều này giúp bạn thay đổi các class này tại thời gian chạy (Runtime) mà không
+làm ảnh hưởng tới chức năng của ứng dụng.
+Dấu hiệu nhận biết:
+Strategy rất dễ để nhận biết. Trong các tình huống mà bạn cảm thấy mình có nhiều phương án (và
+các phương án này tương tự nhau ở input / output) để xử lý cho một vấn đề, bạn có thể nghĩ tới
+Strategy. Ví dụ khi implement các phương thức vận chuyển, các phương thức thanh toán cho đơn
+hàng trên website thương mại điện tử. Hoặc cách mà Laravel có thể thay đổi giữa các driver khác
+nhau trên Cache chẳng hạn (file, Redis, array, …), cũng là nhờ sử dụng đến Strategy.
+Ví dụ:
+<?php
+// Định nghĩa Strategy Shipping (Chiến lược vận chuyển)
+interface ShippingStrategy {
+public function calculate($order);
+}
+// Tạo ra các phương thức vận chuyển khác nhau
+class GHTKShipping implements ShippingStrategy {
+public function calculate($order) {
+// Giả lập logic tính phí vận chuyển của GHTK
+return 1000;
+}
+}
+class GHNShipping implements ShippingStrategy {
+public function calculate($order) {
+// Giả lập logic tính phí vận chuyển của GHN
+return 12000;
+}
+}
+class ViettelPostShipping implements ShippingStrategy {
+public function calculate($order) {
+// Giả lập logic tính phí vận chuyển của ViettelPost
+return 15000;
+}
+}
+Tạo lớp Order và áp dụng Strategy
+class Order {
+private $shippingStrategy;
+public function __construct(ShippingStrategy $shippingStrategy) {
+$this->shippingStrategy = $shippingStrategy;
+}
+public function setShippingStrategy(ShippingStrategy $shippingStrategy) {
+$this->shippingStrategy = $shippingStrategy;
+}
+public function calculateShipping() {
+// Giả lập một đối tượng đơn hàng
+$order = [];
+return $this->shippingStrategy->calculate($order);
+}
+}
+// Tạo đối tượng Order với GHTKShipping Strategy
+$order = new Order(new GHTKShipping ());
+echo "GHTK Shipping Cost: $" . $order->calculateShipping() . "\n"; // Output:
+GHTK Shipping Cost: 1000
+// Thay đổi Strategy thành GHNShipping
+$order->setShippingStrategy(new GHNShipping());
+echo "GHN Shipping Cost: $" . $order->calculateShipping() . "\n"; // Output: GHN
+Shipping Cost: 12000
+// Thay đổi Strategy thành ViettelPostShipping
+$order->setShippingStrategy(new ViettelPostShipping());
+echo "ViettelPost Shipping Cost: $" . $order->calculateShipping() . "\n"; //
+Output: ViettelPost Shipping Cost: 15000

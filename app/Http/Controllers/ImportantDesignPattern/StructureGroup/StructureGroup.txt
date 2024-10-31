@@ -1,0 +1,132 @@
+Nhóm cấu trúc
+Nhóm cấu trúc của các mẫu thiết kế (Structural Design Patterns) liên quan đến cách tổ chức các lớp
+và đối tượng để tạo thành các cấu trúc lớn hơn và phức tạp hơn trong phần mềm. Các mẫu thiết kế
+này giúp đảm bảo rằng các mối quan hệ giữa các đối tượng và lớp được tổ chức một cách hiệu quả
+và dễ bảo trì.
+Adapter
+Adapter là một mẫu thiết kế cấu trúc cho phép các đối tượng với interface không tương thích làm
+việc cùng nhau. Nó hoạt động như một cầu nối giữa các đối tượng không tương thích bằng cách
+chuyển đổi interface của một lớp thành interface mà một lớp khác có thể làm việc cùng. Hiểu nôm
+na, class Adapter sẽ implement interface A, và triển khai lại phương thức của class B. Khi một class
+con triển khai interface A cần kết nối tới B, nó chỉ cần gọi tới Adapter và gọi phương thức tương ứng
+là được.
+Dấu hiệu nhận biết:
+Bài toán dễ nhận thấy nhất với Adapter là khi bạn cần chuyển đổi hệ thống, migrate dữ liệu giữa các
+module khác nhau. Lúc này, Adapter đóng vai trò cây cầu nối đảm việc chuyển đổi trơn tru, không
+gặp sự cố bất thường.
+Ví dụ:
+Chúng ta có một class EmailService đang chạy. Giờ mình muốn sử dụng class SendEmailAWS mới,
+class này có hành vi khác với class cũ (do sử dụng dịch vụ SES của AWS). Chúng ta sẽ sử dụng
+Adapter để làm cầu nối hai hệ thống này
+<?php
+interface EmailServiceInterface {
+public function sendEmail($to, $subject, $message);
+}
+class EmailService implements EmailServiceInterface {
+public function sendEmail($to, $subject, $message) {
+// Gửi email bằng thư viện đã có
+echo "Đã gửi email đến $to với chủ đề: $subject và nội dung: $message";
+}
+}
+class SendEmailAWS {
+public function send($email) {
+// Gửi email bằng API của AWS SES
+echo "Đã gửi email thông qua AWS SES";
+}
+}
+class AWSAdapter implements EmailServiceInterface {
+private $awsService;
+public function __construct(SendEmailAWS $awsService) {
+$this->awsService = $awsService;
+}
+public function sendEmail($to, $subject, $message) {
+// Chuyển đổi từ giao diện hiện có sang giao diện của AWS
+$email = [
+'to' => $to,
+'subject' => $subject,
+'message' => $message
+];
+$this->awsService->send($email);
+}
+}
+// Sử dụng EmailService nhưng bên dưới nó sẽ gửi qua AWS
+$emailService = new AWSAdapter(new SendEmailAWS());
+$emailService->sendEmail('recipient@example.com', 'Chủ đề', 'Nội dung');
+Bạn có thể thay thế $emailService được khởi tạo từ Adapter vào bất cứ chỗ nào đang sử dụng code
+cũ mà không làm break hệ thống.
+Decorator
+Decorator là một mẫu thiết kế cấu trúc cho phép bạn thêm các hành vi mới vào các đối tượng bằng
+cách đặt chúng bên trong các đối tượng bao bọc đặc biệt chứa các hành vi này. Điều này cho phép
+bạn thêm chức năng vào các đối tượng hiện có mà không cần sửa đổi code của chúng, giảm thiểu
+rủi ro gây lỗi.
+Dấu hiệu nhận biết:
+Các yêu cầu bổ sung thêm hành vi cho đối tượng, dựa trên hành vi gốc có thể là dấu hiệu cần sử
+dụng tới Decorator.
+Ví dụ:
+Bạn đang làm một hệ thống bán xe ô tô. Giá cơ bản của một chiếc xe là 20,000 USD. Nếu lắp thêm
+các hệ thống phụ trợ, giá xe sẽ thay đổi. Chúng ta sẽ áp dụng Decorator như sau:
+<?php
+// Interface đại diện cho ô tô
+interface Car {
+public function cost();
+public function description();
+}
+// Class cơ bản đại diện cho ô tô
+class BasicCar implements Car {
+public function cost() {
+return 20000; // Giá của ô tô cơ bản là 20,000 USD
+}
+public function description() {
+return "Ô tô cơ bản";
+}
+}
+// Decorator
+abstract class CarDecorator implements Car {
+protected $car;
+public function __construct(Car $car) {
+$this->car = $car;
+}
+public function cost() {
+return $this->car->cost();
+}
+public function description() {
+return $this->car->description();
+}
+}
+// Class decorate thêm hệ thống định vị
+class NavigationSystem extends CarDecorator {
+public function cost() {
+return $this->car->cost() + 2000; // Giá của hệ thống định vị là 2,000
+USD
+}
+public function description() {
+return $this->car->description() . ", có hệ thống định vị";
+}
+}
+// Class decorate thêm ghế da
+class LeatherSeats extends CarDecorator {
+public function cost() {
+return $this->car->cost() + 1500; // Giá của ghế da là 1,500 USD
+}
+public function description() {
+return $this->car->description() . ", có ghế da";
+}
+}
+// Sử dụng
+$basicCar = new BasicCar();
+echo "Giá của ô tô cơ bản: " . $basicCar->cost() . " USD\n";
+echo "Mô tả của ô tô cơ bản: " . $basicCar->description() . "\n\n";
+$carWithNavigation = new NavigationSystem($basicCar);
+echo "Giá của ô tô có hệ thống định vị: " . $carWithNavigation->cost() . "
+USD\n";
+echo "Mô tả của ô tô có hệ thống định vị: " . $carWithNavigation->description() .
+"\n\n";
+$carWithLeatherSeats = new LeatherSeats($basicCar);
+echo "Giá của ô tô có ghế da: " . $carWithLeatherSeats->cost() . " USD\n";
+echo "Mô tả của ô tô có ghế da: " . $carWithLeatherSeats->description() .
+"\n\n";
+$carWithBothOptions = new NavigationSystem(new LeatherSeats($basicCar));
+echo "Giá của ô tô có cả hệ thống định vị và ghế da: " .
+$carWithBothOptions->cost() . " USD\n";
+echo "Mô tả của ô tô có cả hệ thống định vị và ghế da: " .
+$carWithBothOptions->description() . "\n";

@@ -1,0 +1,68 @@
+Command
+Command là một mẫu thiết kế hành vi biến một yêu cầu thành một đối tượng độc lập chứa tất cả
+thông tin về yêu cầu đó, và sử dụng nó trở thành đầu vào cho class xử lý. Command giúp đóng gói
+nghiệp vụ, phân chia rõ ràng giữa luồng yêu cầu - xử lý (Vì yêu cầu đã đóng vai trò là tham số cho
+luồng xử lý, nên nó được tách bạch rõ ràng các class xử lý với nhau).
+Dấu hiệu nhận biết:
+● Bạn cần tách biệt yêu cầu của Hành động (Command) ra khỏi phần xử lý Hành động (Handler)
+● Bạn cần tham số hoá các đối tượng dựa theo Hành động (Command)
+Trong cuốn “Thiết kê hướng nghiệp vụ với Laravel” của mình, mình có mô tả rất rõ về cách áp dụng
+CommandBus Design Pattern trong thiết kế (Tương tự Pattern Command này). Các bạn có thể tham
+khảo nhé.
+Ví dụ:
+<?php
+// Định nghĩa interface Command
+interface Command {
+public function execute();
+}
+// Tạo các class Command cụ thể
+class TurnOnLightCommand implements Command {
+private $light;
+public function __construct(Light $light) {
+$this->light = $light;
+}
+public function execute() {
+$this->light->turnOn();
+}
+}
+class TurnOffLightCommand implements Command {
+private $light;
+public function __construct(Light $light) {
+$this->light = $light;
+}
+public function execute() {
+$this->light->turnOff();
+}
+}
+// Tạo class Light được tương tác bởi Command
+class Light {
+public function turnOn() {
+echo "The light is on\n";
+}
+public function turnOff() {
+echo "The light is off\n";
+}
+}
+// Class nhận vào Command và gọi đến Handler tương ứng
+class RemoteControl {
+private $command;
+public function setCommand(Command $command) {
+$this->command = $command;
+}
+public function pressButton() {
+$this->command->execute();
+}
+}
+// Tạo đối tượng Light
+$light = new Light();
+// Tạo đối tượng Command
+$turnOnCommand = new TurnOnLightCommand($light);
+$turnOffCommand = new TurnOffLightCommand($light);
+// Tạo đối tượng RemoteControl
+$remote = new RemoteControl();
+// Bật đèn
+$remote->setCommand($turnOnCommand);
+$remote->pressButton(); // Output: The light is on
+// Tắt đèn
+$remote->setCommand($turnOffCommand);
+$remote->pressButton(); // Output: The light is off

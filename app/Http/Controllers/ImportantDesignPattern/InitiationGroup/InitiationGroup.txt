@@ -1,0 +1,62 @@
+Các Design Pattern quan trọng
+Có rất nhiều các Design Pattern khi thiết kế hướng đối tượng. Cuốn “Design Patterns: Elements of
+Reusable Object-Oriented Software” của Gang of Four (Erich Gamma, Richard Helm, Ralph
+Johnson và John Vlissides) là cuốn tiên phong áp dụng các Pattern vào thiết kế phần mềm, đề cập
+đến 23 patterns, chia vào các nhóm khởi tạo, cấu trúc, hành vi (cuốn này là kinh điển về Design
+Pattern, bạn nên tìm đọc). Trong section dưới đây, mình chỉ xin chia sẻ về các Pattern mình cho là
+quan trọng, thường xuyên được sử dụng trong thực tế, cũng như cách nhận biết tình huống nào bạn
+cần sử dụng chúng.
+Nhóm khởi tạo
+Mục tiêu chính của hầu hết các Pattern thuộc nhóm khởi tạo là “kéo” việc khởi tạo trực tiếp đối tượng
+ra thành một class riêng biệt. Nhờ đó, việc thay thế các đối tượng sẽ trở nên linh hoạt hơn, đảm bảo
+các nguyên tắc SOLID. Chúng ta cung cấp một giao diện chung cho việc khởi tạo đối tượng và có
+thể thay thế đối tượng đó ở class con khi cần thiết.
+Factory Pattern
+Factory Method là một mẫu thiết kế khởi tạo cung cấp một giao diện để tạo các đối tượng trong một
+lớp cha, nhưng cho phép các lớp con thay đổi loại đối tượng sẽ được tạo ra. Mục đích chính của
+Factory Design Pattern là giảm sự phụ thuộc giữa code và lớp cụ thể. Điều này giúp dễ dàng mở
+rộng và bảo trì hệ thống hơn.
+Dấu hiệu nhận biết:
+Khi bạn cần khởi tạo nhiều loại đối tượng khác nhau mà không cần biết chính xác đối tượng nào sẽ
+được khởi tạo. Ví dụ trong việc xây dựng các phương thức vận chuyển cho website Thương mại
+điện tử: Bạn có thể gửi hàng qua GHTK, GHN, ViettelPost, ….. Lúc này, Factory sẽ đóng vai trò khởi
+tạo đối tượng tương ứng của từng phương thức vận chuyển khác nhau.
+Ví dụ
+<?php
+// Lớp Dog
+class Dog {
+public function speak() {
+return "Gâu gâu";
+}
+}
+// Lớp Cat
+class Cat {
+public function speak() {
+return "Meo meo";
+}
+}
+// Tạo lớp Factory
+class AnimalFactory {
+// Phương thức để tạo đối tượng Animal dựa trên loại (type)
+public function createAnimal($type) {
+switch ($type) {
+case 'dog':
+return new Dog();
+case 'cat':
+return new Cat();
+default:
+throw new Exception("Invalid animal type");
+}
+}
+}
+// Sử dụng Factory để tạo đối tượng Dog
+$factory = new AnimalFactory();
+$dog = $factory->createAnimal('dog');
+echo $dog->speak(); // Output: Gâu gâu
+// Sử dụng Factory để tạo đối tượng Cat
+$cat = $factory->createAnimal('cat');
+echo $cat->speak(); // Output: Meo meo
+?>
+Chú ý: Mình không đi sâu vào hai Pattern riêng biệt là Factory Method và Abstract Factory vì tính
+tương tự nhau của nó. Ở đây, mình đưa đến một cách đơn giản hơn để áp dụng Factory. Các bạn có
+thể tìm hiểu thêm để đi sâu hơn vào hai Pattern trên nhé.

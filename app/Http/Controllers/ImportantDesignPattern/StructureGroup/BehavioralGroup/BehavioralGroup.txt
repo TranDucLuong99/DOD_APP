@@ -1,0 +1,31 @@
+Nhóm hành vi
+Mẫu thiết kế hành vi xử lý việc giao tiếp hiệu quả và phân công trách nhiệm giữa các đối tượng.
+Chain of Responsibility
+Chain of Responsibility là pattern cho phép dữ liệu được truyền qua một loạt các đối tượng xử lý
+trước khi ra được kết quả cuối cùng. Những lợi ích của pattern này:
+● Phân chia trách nhiệm rõ ràng ra các Class riêng biệt.
+● Tách biệt các bước giúp
+Dấu hiệu nhận biết:
+Các công việc cần chia thành từng bước (giống như trên một dây chuyền) có thể nghĩ tới Pattern
+này. Một ví dụ tiêu biểu là Middleware cho một ứng dụng web (HTTP). Khi HTTP Request tới, nó đi
+qua một loạt các Middleware như xác thực, phân quyền … trước khi đến bước xử lý cuối. Nếu một
+trong các bước đó gặp vấn đề, Request đó sẽ bị tạm dừng.
+Ví dụ:
+Mình sẽ sử dụng Pipeline trong Laravel để mô tả Pattern này:
+use Illuminate\Support\Facades\Pipeline;
+use App\Pipelines\CheckAuthentication;
+use App\Pipelines\LogRequest;
+use App\Pipelines\HandleResponse;
+// Tạo $request sẽ đi qua các class xử lý
+$request = [];
+// Sử dụng Pipeline để xử lý yêu cầu
+$response = Pipeline::send($request)
+->through([
+CheckAuthentication::class,
+LogRequest::class,
+HandleResponse::class,
+])
+->then(function ($request) {
+return "Request handled successfully.";
+});
+echo $response;

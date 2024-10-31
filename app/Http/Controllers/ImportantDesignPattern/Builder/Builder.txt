@@ -1,0 +1,60 @@
+Builder
+Builder là một mẫu thiết kế khởi tạo cho phép bạn xây dựng các đối tượng phức tạp từng bước một.
+Pattern này cho phép bạn tạo ra các loại và biểu diễn khác nhau của một đối tượng bằng cách sử
+dụng cùng một đoạn code.
+Dấu hiệu nhận biết:
+● Bạn có một đối tượng lớn, phức tạp. Ví dụ một đơn hàng với nhiều thuộc tính về khách hàng,
+thời gian gửi hàng, ghi chú …. Quá trình khởi tạo đối tượng này cần một Builder riêng.
+● Đối tượng lớn nhưng đôi khi không cần toàn bộ các thuộc tính. Bạn có thể sử dụng các
+Builder khác nhau để xây dựng các đối tượng Đơn hàng phù hợp với context (ngữ cảnh mà
+bạn đang sử dụng).
+Ví dụ
+<?php
+// Định nghĩa class Car
+class Car {
+private $model;
+private $year;
+private $color;
+public function setModel($model) {
+$this->model = $model;
+}
+public function setYear($year) {
+$this->year = $year;
+}
+public function setColor($color) {
+$this->color = $color;
+}
+public function __toString() {
+return "{$this->color} {$this->year} {$this->model}";
+}
+}
+// Định nghĩa class CarBuilder
+class CarBuilder {
+private $car;
+public function __construct() {
+$this->car = new Car();
+}
+public function setModel($model) {
+$this->car->setModel($model);
+return $this;
+}
+public function setYear($year) {
+$this->car->setYear($year);
+return $this;
+}
+public function setColor($color) {
+$this->car->setColor($color);
+return $this;
+}
+public function build() {
+return $this->car;
+}
+}
+// Sử dụng CarBuilder để tạo đối tượng Car
+$builder = new CarBuilder();
+$car = $builder->setModel('Corolla')
+->setYear(2020)
+->setColor('Red')
+->build();
+echo $car; // Output: Red 2020 Corolla
+?>

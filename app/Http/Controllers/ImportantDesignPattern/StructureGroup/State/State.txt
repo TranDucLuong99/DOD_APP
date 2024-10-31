@@ -1,0 +1,64 @@
+State
+State là một mẫu thiết kế hành vi cho phép một đối tượng thay đổi hành vi của nó khi trạng thái bên
+trong của nó thay đổi. Điều này giúp gia tăng tính linh hoạt, phân chia trách nhiệm rõ ràng giữa khi
+đối tượng thay đổi trạng thái và tăng khả năng bảo trì.
+Dấu hiệu nhận biết:
+Bài toán kinh điển nhất có lẽ là thay đổi trạng thái đơn hàng: Khi đơn hàng đó mới được tiếp nhận,
+nhân viên lấy hàng sẽ được quyền thao tác với đơn hàng đó. Tuy nhiên khi đơn hàng chuyển sang
+trạng đã giao hàng, nhân viên giao hàng sẽ không được phép tác động vào đơn hàng nữa. Bất kể khi
+nào hành vi của đối tượng có thể được thay đổi bởi trạng thái của nó, bạn có thể nghĩ tới State
+Pattern.
+Ví dụ:
+<?php
+// Interface trạng thái đơn, trong đó có cho phép đơn được thao tác hay không
+interface OrderState {
+public function getStatus();
+public function allowProcessing();
+}
+// Các trạng thái được tách thành các class riêng biệt để phân chia trách nhiệm
+xử lý logic.
+//Class xử lý đơn mới, nó cho phép tác động thêm (allowProcessing trả ra true)
+class NewOrderState implements OrderState {
+public function getStatus() {
+return 'New';
+}
+public function allowProcessing() {
+return true;
+}
+}
+//Class xử lý đơn đã được giao, nó không cho phép tác động thêm
+(allowProcessing trả ra false)
+class ShippedOrderState implements OrderState {
+public function getStatus() {
+return 'Shipped';
+}
+public function allowProcessing() {
+return false;
+}
+}
+//Tạo class Order để lưu trạng thái
+class Order {
+private $state;
+// Khởi tạo bằng trạng thái New
+public function __construct() {
+$this->state = new NewOrderState();
+}
+public function setState(OrderState $state) {
+$this->state = $state;
+}
+public function getStatus() {
+return $this->state->getStatus();
+}
+public function allowProcessing() {
+return $this->state->allowProcessing();
+}
+}
+// Tạo đối tượng Order
+$order = new Ordert();
+// Thử kiểm tra xem có được thao tác không
+$order->allowProcessing(); // true
+// Chuyển trạng thái đến Shipped
+$order->setState(new ShippedOrderState());
+echo "Current Order Status: " . $order->getStatus() . "\n"; // Output: Shipped
+// Thử kiểm tra xem có được thao tác không
+$order->allowProcessing(); // false

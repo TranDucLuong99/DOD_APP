@@ -1,0 +1,51 @@
+Singleton
+Singleton là một mẫu thiết kế khởi tạo đảm bảo rằng một class chỉ có một instance duy nhất, và nó
+sẽ trở thành instance toàn cục cho toàn bộ lifecycle của ứng dụng. Điều này rất hữu ích khi bạn cần
+một đối tượng duy nhất để điều phối các hành động trong hệ thống.
+Dấu hiệu nhận biết:
+Những trường hợp bạn cần tái sử dụng trạng thái của đối tượng trong ứng dụng: ví dụ mở Database
+Connection, hoặc tạo một HTTP Client. Trong những trường hợp này, bạn không mong muốn khởi
+tạo lại instance mới từ đầu, mà chuyển sang sử dụng instance đã có.
+Ví dụ:
+Một đoạn code sử dụng Singleton đơn giản để khởi tạo Database Connection
+<?php
+class Database {
+// Thuộc tính tĩnh lưu trữ thể hiện duy nhất của lớp Database
+private static $instance = null;
+private $connection;
+private $host = 'localhost';
+private $username = 'root';
+private $password = '';
+private $database = 'example_db';
+// Constructor được khai báo private để ngăn việc khởi tạo đối tượng từ bên
+ngoài
+private function __construct() {
+$this->connection = new mysqli($this->host, $this->username,
+$this->password, $this->database);
+// Kiểm tra kết nối
+if ($this->connection->connect_error) {
+die("Connection failed: " . $this->connection->connect_error);
+}
+}
+// Sử dụng static để đảm bảo chỉ khởi tạo duy nhất một instance
+public static function getInstance() {
+if (self::$instance === null) {
+self::$instance = new Database();
+}
+return self::$instance;
+}
+// Phương thức để lấy kết nối
+public function getConnection() {
+return $this->connection;
+}
+}
+// Sử dụng Database Singleton
+$db1 = Database::getInstance();
+$conn1 = $db1->getConnection();
+$db2 = Database::getInstance();
+$conn2 = $db2->getConnection();
+// Kiểm tra xem hai kết nối có trỏ đến cùng một thể hiện không
+if ($conn1 === $conn2) {
+echo "Both connections are the same.\n";
+}
+?>
