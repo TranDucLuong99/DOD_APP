@@ -1,3 +1,4 @@
+Nguyên Tắc Thay Thế Liskov (Liskov Substitution Principle)
 Có một điều thú vị về nguyên tắc này: Nó được phát biểu lần đầu bởi một người phụ nữ, bà Barbara
 Liskov, một nhà khoa học máy tính xuất sắc. Nguyên tắc này có thể được mô tả một cách đơn giản:
 Thằng class cha có hành vi gì, thì class con phải có đầy đủ có hành vi đó. Nghĩa là ta có thể thay thế

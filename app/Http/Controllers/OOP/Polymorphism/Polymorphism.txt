@@ -14,3 +14,44 @@ thực của một đối tượng và gọi triển khai của nó ngay cả kh
 trong ngữ cảnh hiện tại. Các đối tượng thuộc class con có thể được sử dụng một cách linh hoạt,
 miễn là nó đảm bảo các hành vi giống với class cha: Nếu có một class Car mà không thể “move”,
 chúng ta sẽ không xem xét nó là một chiếc ô tô thông thường nữa mà cần báo lỗi.
+<?php
+// Lớp cha
+class Car {
+// Phương thức chung cho tất cả các loại xe
+public function move() {
+echo "Xe đang di chuyển\n";
+}
+}
+// Lớp con Sedan kế thừa từ lớp cha Car
+class Sedan extends Car {
+// Triển khai lại phương thức move cho Sedan
+public function move() {
+echo "Sedan đang chạy trên đường\n";
+}
+}
+// Lớp con SUV kế thừa từ lớp cha Car
+class SUV extends Car {
+// Triển khai lại phương thức move cho SUV
+public function move() {
+echo "SUV đang chạy trên địa hình khó khăn\n";
+}
+}
+// Lớp con SportsCar kế thừa từ lớp cha Car
+class SportsCar extends Car {
+// Triển khai lại phương thức move cho SportsCar
+public function move() {
+echo "SportsCar đang chạy ở tốc độ cao\n";
+}
+}l
+// Hàm để kiểm tra tính đa hình
+function testCarMovement(Car $car) {
+$car->move();
+}
+// Sử dụng các lớp con
+$sedan = new Sedan();
+$suv = new SUV();
+$sportsCar = new SportsCar();
+testCarMovement($sedan); // Output: Sedan đang chạy trên đường
+testCarMovement($suv); // Output: SUV đang chạy trên địa hình khó khăn
+testCarMovement($sportsCar); // Output: SportsCar đang chạy ở tốc độ cao
+?>

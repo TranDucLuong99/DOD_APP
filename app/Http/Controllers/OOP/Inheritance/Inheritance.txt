@@ -12,3 +12,40 @@ sâu hơn ở section SOLID bên dưới). Điều này dẫn tới bug vô tìn
 trước, và nó cũng dẫn tới một nguyên tắc quan trọng nữa khi lập trình OOP: Composition over
 Inheritance (Ưu tiên sử dụng thành phần thay vì kế thừa).
 Tiếp tục là một ví dụ đơn giản về Animal, Cat, Dog để minh hoạ cho kế thừa:
+
+<?php
+// Class cha
+class Animal {
+// Thuộc tính chung cho tất cả các động vật
+protected $name;
+// Constructor để khởi tạo tên động vật
+public function __construct($name) {
+$this->name = $name;
+}
+// Phương thức chung cho tất cả các động vật
+public function eat() {
+echo $this->name . " đang ăn\n";
+}
+}
+// Clas con Dog kế thừa từ lớp cha Animal
+class Dog extends Animal {
+// Phương thức đặc trưng cho Dog
+public function bark() {
+echo $this->name . " sủa: Gâu gâu\n";
+}
+}
+// Class con Cat kế thừa từ lớp cha Animal
+class Cat extends Animal {
+// Phương thức đặc trưng cho Cat
+public function meow() {
+echo $this->name . " kêu: Meo meo\n";
+}
+}
+// Sử dụng các class con
+$dog = new Dog("Chó");
+$cat = new Cat("Mèo");
+$dog->eat(); // Output: Chó đang ăn
+$dog->bark(); // Output: Chó sủa: Gâu gâu
+$cat->eat(); // Output: Mèo đang ăn
+$cat->meow(); // Output: Mèo kêu: Meo meo
+?>

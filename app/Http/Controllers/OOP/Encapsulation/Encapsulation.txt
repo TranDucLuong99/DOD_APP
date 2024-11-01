@@ -1,3 +1,4 @@
+Đóng gói (Encapsulation)
 Đặc trưng này của OOP khiến nó trở nên gần gũi hơn với thế giới thật. Trong thực tế, bạn có thể
 thao tác với hầu hết các loại đồ vật (đối tượng) mà không cần biết bên trong nó có gì. Ví dụ: bật một
 chiếc TV, bật một chiếc Laptop. Những thứ chi tiết như các vi mạch, các thiết kế phức tạp đều được
@@ -12,3 +13,48 @@ Trong OOP chúng ta thường sử dụng các từ khoá như “public”, “
 ● Private chỉ cho phép các method thuộc class đó được phép truy cập (Các lớp con cũng không
 được phép)
 Cùng xem ví dụ dưới đây nhé:
+<?php
+class Person {
+// Các thuộc tính private chỉ có thể được truy cập trong class này
+private $name;
+private $age;
+// Constructor để khởi tạo đối tượng
+public function __construct($name, $age) {
+$this->name = $name;
+$this->age = $age;
+}
+// Phương thức public để lấy giá trị của thuộc tính name
+public function getName() {
+return $this->name;
+}
+// Phương thức public để đặt giá trị của thuộc tính name
+public function setName($name) {
+$this->name = $name;
+}
+// Phương thức public để lấy giá trị của thuộc tính age
+public function getAge() {
+return $this->age;
+}
+// Phương thức public để đặt giá trị của thuộc tính age
+public function setAge($age) {
+if ($age > 0) { // Đảm bảo tuổi phải là số dương
+$this->age = $age;
+}
+}
+}
+// Tạo một đối tượng Person
+$person = new Person("John Doe", 30);
+// Truy cập và thay đổi các thuộc tính thông qua các phương thức
+echo "Name: " . $person->getName() . "\n"; // Output: Name: John Doe
+echo "Age: " . $person->getAge() . "\n"; // Output: Age: 30
+// Đặt lại giá trị cho thuộc tính name và age
+$person->setName("Jane Doe");
+$person->setAge(25);
+echo "Updated Name: " . $person->getName() . "\n"; // Output: Updated Name: Jane
+Doe
+echo "Updated Age: " . $person->getAge() . "\n"; // Output: Updated Age: 25
+// Thử đặt tuổi không hợp lệ
+$person->setAge(-5);
+echo "Age after invalid update: " . $person->getAge() . "\n"; // Output: Age
+after invalid update: 25
+?>
