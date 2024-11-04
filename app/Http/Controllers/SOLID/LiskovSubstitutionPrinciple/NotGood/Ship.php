@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\SOLID\LiskovSubstitutionPrinciple\Good;
+namespace App\Http\Controllers\SOLID\LiskovSubstitutionPrinciple\NotGood;
 // Lớp không liên quan đến Car
 class Ship {
     public function sail() {

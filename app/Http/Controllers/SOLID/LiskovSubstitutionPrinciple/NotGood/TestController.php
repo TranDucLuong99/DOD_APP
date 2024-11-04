@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
-    // Code chạy thử không lỗi
+    // Code chạy thử gây lỗi
     function testCarFactory(CarFactory $factory) {
         $car = $factory->makeNewCar();
-        echo $car->drive() . "\n";
+        echo $car->drive() . "\n"; // Lỗi vì Ship không có phương thức drive
     }
 }
