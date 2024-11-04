@@ -17,5 +17,8 @@ class OpenClosePrincipleController extends Controller
         $shippingService = new ShippingService($trainShipping);
         echo $shippingService->calculate(100); // Output: 120
 
+        $airShipping = new AirShipping();
+        $shippingService = new ShippingService($airShipping);
+        echo  $shippingService->calculate(100);
     }
 }
