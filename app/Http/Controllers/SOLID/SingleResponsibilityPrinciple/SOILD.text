@@ -53,4 +53,4 @@ nhất qua hàm __invoke(), và nó sẽ chỉ làm duy nhất công việc đă
 Khi bạn không đảm bảo tính trách nhiệm duy nhất, cơn ác mộng sẽ tới khi ứng dụng của bạn gặp
 phải những thay đổi. Một class Service lớn, khiến bạn bối rối khi phải sửa nó để đáp ứng nghiệp vụ.
 Và rất có thể, bạn có nguy cơ thay đổi những thứ mà bạn không mong muốn, dẫn tới những lỗi tiềm
-ẩn trong tương lai.
+ẩn trong tương lai #
