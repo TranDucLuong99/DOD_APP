@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('export-sound', [App\Http\Controllers\OOP\Abstraction\AbstractionController::class, 'exportSound']);
 Route::get('use-person', [\App\Http\Controllers\OOP\Encapsulation\EncapsulationController::class, 'usePerson']);
+Route::get('test', [\App\Http\Controllers\ImportantDesignPattern\InitiationGroup\Factory\TestController::class, 'get']);
