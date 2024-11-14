@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\UserRepository;
+use App\Repositories\UserRepositoryInterface;
 use App\Services\Payment\PaymentGatewayInterface;
 use App\Services\Payment\PayPalGateway;
 use App\Services\Payment\StripeGateway;
@@ -22,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
 
             return new StripeGateway(); // Mặc định là Stripe
         });
+
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     /**
