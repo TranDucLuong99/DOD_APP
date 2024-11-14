@@ -14,5 +14,9 @@ class TestController extends Controller
             ->setColor('Red')
             ->build();
         echo $car; // Output: Red 2020 Corolla
+
+        $orderBuilder = new OrderBuilder();
+        $order = $orderBuilder->setName('Đơn Hàng Máy Bay')->setPrice(1000000)->setDescription('Lô hàng quan trọng')->build();
+        echo $order;
     }
 }
