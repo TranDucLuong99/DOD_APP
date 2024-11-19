@@ -8,7 +8,6 @@ class CarBuilder {
         $this->car = new Car();
     }
     public function setModel($model) {
-
         $this->car->setModel($model);
         return $this;
     }
